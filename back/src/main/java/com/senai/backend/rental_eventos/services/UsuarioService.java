@@ -44,4 +44,20 @@ public class UsuarioService {
         Usuario usuario = buscarPorId(id);
         usuarioRepository.delete(usuario);
     }
+
+    public Usuario login(String email, String senha) {
+
+        Usuario usuario = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("E-mail não encontrado."));
+
+        if (!usuario.getSenha().equals(senha)) {
+            throw new RuntimeException("Senha incorreta.");
+        }
+
+        if (!usuario.getAtivo()) {
+            throw new RuntimeException("Usuário inativo.");
+        }
+
+        return usuario;
+    }
 }

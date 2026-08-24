@@ -50,4 +50,24 @@ public class UsuarioController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Usuario usuario) {
+
+        try {
+
+            Usuario usuarioLogado = usuarioService.login(
+                    usuario.getEmail(),
+                    usuario.getSenha()
+            );
+
+            return ResponseEntity.ok(usuarioLogado);
+
+        } catch (RuntimeException e) {
+
+            return ResponseEntity
+                    .status(401)
+                    .body(e.getMessage());
+        }
+    }
 }
